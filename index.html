@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SubscriptionShare - Share & Rent OTT Subscriptions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .subscription-card:hover {
+            transform: translateY(-5px);
+            transition: transform 0.3s ease;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <nav class="bg-white shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <h1 class="text-2xl font-bold text-blue-600">SubscriptionShare</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button id="shareBtn" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                        Share Subscription
+                    </button>
+                    <button id="profileBtn" class="text-gray-600 hover:text-blue-600">
+                        <i class="bi bi-person-circle text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Available Subscriptions -->
+        </div>
+
+        <!-- Share Subscription Modal -->
+        <div id="shareModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center">
+            <div class="bg-white rounded-lg p-6 w-full max-w-md">
+                <h2 class="text-xl font-semibold mb-4">Share Your Subscription</h2>
+                <form id="shareForm">
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Platform</label>
+                            <select class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2" required>
+                                <option value="netflix">Netflix</option>
+                                <option value="prime">Amazon Prime</option>
+                                <option value="disney">Disney+</option>
+                                <option value="hbo">HBO Max</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Duration (months)</label>
+                            <input type="number" min="1" max="12" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Price per month (₹)</label>
+                            <input type="number" min="1" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2" required>
+                        </div>
+                        <div class="flex justify-end space-x-3">
+                            <button type="button" onclick="closeModal()" class="px-4 py-2 text-gray-600 hover:text-gray-800">Cancel</button>
+                            <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Share</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const subscriptions = [
+            { platform: 'Netflix', duration: 6, price: 200, owner: 'Rahul S.' },
+            { platform: 'Amazon Prime', duration: 12, price: 150, owner: 'Priya M.' },
+            { platform: 'Disney+', duration: 3, price: 180, owner: 'Amit K.' }
+        ];
+
+        function createSubscriptionCard(sub) {
+            return `
+                <div class="subscription-card bg-white rounded-lg shadow-md p-6 hover:shadow-lg">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-semibold">${sub.platform}</h3>
+                        <span class="text-sm text-gray-500">By ${sub.owner}</span>
+                    </div>
+                    <div class="space-y-2">
+                        <p class="text-gray-600">Duration: ${sub.duration} months</p>
+                        <p class="text-gray-600">Price: ₹${sub.price}/month</p>
+                        <button onclick="rentSubscription('${sub.platform}')" class="w-full mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                            Rent Now
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function displaySubscriptions() {
+            const container = document.querySelector('main div');
+            container.innerHTML = subscriptions.map(sub => createSubscriptionCard(sub)).join('');
+        }
+
+        function rentSubscription(platform) {
+            alert(`Initiating rental process for ${platform}. Payment gateway will open shortly.`);
+        }
+
+        function closeModal() {
+            document.getElementById('shareModal').classList.add('hidden');
+        }
+
+        document.getElementById('shareBtn').addEventListener('click', () => {
+            document.getElementById('shareModal').classList.remove('hidden');
+        });
+
+        document.getElementById('shareForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            alert('Subscription shared successfully!');
+            closeModal();
+        });
+
+        // Initialize
+        displaySubscriptions();
+    </script>
+<script>document.body.addEventListener('wheel', e => { if (!e.ctrlKey) return; e.preventDefault(); return }, { passive: false })</script>
+	</body>
+</html>
